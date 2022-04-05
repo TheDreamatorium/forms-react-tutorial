@@ -6,22 +6,30 @@ export default function App() {
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
-        email: ""
+        email: "",
+        comments: "",
+        isFriendly: true,
+        employment: "",
+        favColor: ""
     })
 
-    console.log(formData)
-
     function handleChange(event) {
+        const {name, value, type, checked} = event.target
         setFormData(prevFormData => {
             return {
                 ...prevFormData,
-                [event.target.name]: event.target.value
+                [name]: type === 'checkbox' ? checked : value
             }
         })
     }
 
+    function handleSubmit(event) {
+        event.preventDefault()
+        console.log(formData)
+    }
+
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <input 
                 type="text"
                 placeholder="First Name"
@@ -43,6 +51,66 @@ export default function App() {
                 name="email"
                 value={formData.email}
             />
+            <textarea
+                value={formData.comments}
+                placeholder="Comments"
+                name="comments"
+                onChange={handleChange}
+            />
+            <input
+                type="checkbox"
+                id="isFriendly"
+                checked={formData.isFriendly}
+                onChange={handleChange}
+                name="isFriendly"
+            />
+            <label htmlFor="isFriendly">Are you friendly?</label>
+            <br/>
+            <fieldset>
+                <legend>Current employment status</legend>
+                <input 
+                    type="radio"
+                    id="unemployed"
+                    name="employment"
+                    value="unemployed"
+                    onChange={handleChange}
+                />
+                <label htmlFor="unemployed" >Unemployed</label>
+                <br/>
+                <input 
+                    type="radio"
+                    id="part-time"
+                    name="employment"
+                    value="part-time"
+                    onChange={handleChange}
+                />
+                <label htmlFor="part-time" >Part-time</label>
+                <input 
+                    type="radio"
+                    id="full-time"
+                    name="employment"
+                    value="full-time"
+                    onChange={handleChange}
+                />
+                <label htmlFor="full-time" >Full-time</label>
+                <br/>
+            </fieldset>
+            <br/>
+            <label>What is your favorite color?</label>
+            <select 
+                id="favColor"
+                value={formData.favColor}
+                onChange={handleChange}
+                name="favColor"
+            >
+                <option value="">--choose color --</option>
+                <option value="red">Red</option>
+                <option value="orange">Orange</option>
+                <option value="yellow">Yellow</option>
+                <option value="green">Green</option>
+                <option value="blue">Blue</option>
+            </select>
+            <button>Submit</button>
         </form>
     )
 }
